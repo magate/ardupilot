@@ -283,6 +283,14 @@ const AP_Param::GroupInfo AP_TECS::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("HDEM_TCONST", 33, AP_TECS, _hgt_dem_tconst, 3.0f),
 
+    // @Param: SPDWEIGHTBF
+    // @DisplayName: Blend factor applied to speed weighting
+    // @Description: Blend factor to apply to speed weighting to avoid step changes for quadplanes in particular moving between synthetic and actual airspeed after transition completes.
+    // @Range: 1.0 100.0
+    // @Increment: 0.1
+    // @User: Advanced
+    AP_GROUPINFO("SPDWEIGHTBF", 34, AP_TECS, _spdWeightBlendFactor, 1.0f),
+
     AP_GROUPEND
 };
 
@@ -939,6 +947,18 @@ void AP_TECS::_update_pitch(void)
             _SKE_weighting = constrain_float(_spdWeightLand, 0.0f, 2.0f);
         }
     }
+
+    // Force the blend factor to be 1 or greater since we can't blend faster than time and provide a
+    // safe divide.
+    float spdWeightBlendFactor = MAX(_spdWeightBlendFactor, 1.0f);
+
+    // Blend the SKE weighting. This is initialized at zero for quadplanes since they start in a
+    // a VTOL mode. If not we would need to delay at the start of takeoff to get the user desired
+    // weighting.
+    if (fabsf(_SKE_weighting_prev - _SKE_weighting) > 0.01f) {
+        _SKE_weighting = _SKE_weighting_prev - (_SKE_weighting_prev - _SKE_weighting)/spdWeightBlendFactor;
+    }
+    _SKE_weighting_prev = _SKE_weighting;
 
     float SPE_weighting = 2.0f - _SKE_weighting;
 
