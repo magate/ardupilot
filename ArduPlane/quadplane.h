@@ -21,7 +21,6 @@
 #include <AP_Logger/LogStructure.h>
 #include <AP_Mission/AP_Mission.h>
 #include <AP_Proximity/AP_Proximity.h>
-#include <AP_LandingDetector/AP_LandingDetector.h>
 #include "qautotune.h"
 #include "defines.h"
 #include "tailsitter.h"
@@ -60,7 +59,6 @@ public:
     friend class ModeQAutotune;
     friend class ModeQAcro;
     friend class ModeLoiterAltQLand;
-    friend class AP_LandingDetector;
     
     QuadPlane(AP_AHRS &_ahrs);
 
@@ -207,7 +205,6 @@ private:
     AC_PosControl *pos_control;
     AC_WPNav *wp_nav;
     AC_Loiter *loiter_nav;
-    AP_LandingDetector *landing_detector;
     
     // maximum vertical velocity the pilot may request
     AP_Int16 pilot_velocity_z_max_up;

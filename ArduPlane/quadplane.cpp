@@ -2950,7 +2950,7 @@ void QuadPlane::takeoff_controller(void)
     plane.nav_roll_cd = 0;
     plane.nav_pitch_cd = 0;
 
-    landing_detector->enabled();
+    plane.g2.landing_detector.enabled();
 
     if (!plane.arming.is_armed_and_safety_off()) {
         return;
