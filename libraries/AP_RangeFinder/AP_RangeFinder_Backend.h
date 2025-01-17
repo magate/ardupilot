@@ -56,6 +56,7 @@ public:
     uint16_t distance_cm() const { return state.distance_m*100.0f; }
     int8_t signal_quality_pct() const  WARN_IF_UNUSED { return state.signal_quality_pct; }
     uint16_t voltage_mv() const { return state.voltage_mv; }
+    uint8_t signal_to_noise_ratio() const { return state.snr; }
     virtual int16_t max_distance_cm() const { return params.max_distance_cm; }
     virtual int16_t min_distance_cm() const { return params.min_distance_cm; }
     int16_t ground_clearance_cm() const { return params.ground_clearance_cm; }

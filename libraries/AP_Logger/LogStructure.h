@@ -460,6 +460,7 @@ struct PACKED log_RFND {
     uint8_t status;
     uint8_t orient;
     int8_t quality;
+    uint8_t snr;
 };
 
 /*
